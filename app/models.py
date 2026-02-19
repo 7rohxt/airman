@@ -151,6 +151,39 @@ class IngestionRun(Base):
     diff_summary = Column(JSON, default=dict)          # what changed
 
 
+# ── Roster versioning (Level 2) ───────────────────────────────────────────────
+
+class RosterVersion(Base):
+    __tablename__ = "roster_versions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    version = Column(Integer, nullable=False)
+    week_start = Column(Date, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+    created_by = Column(String, default="system")
+    correlation_id = Column(String, nullable=True)      # for tracking disruption events
+    
+    roster_json = Column(JSON, nullable=False)          # full roster snapshot
+    diff_json = Column(JSON, nullable=True)             # changes from previous version
+    change_summary = Column(JSON, default=dict)         # affected_slots, reasons, citations
+    
+    churn_rate = Column(Float, default=0.0)             # % of slots changed
+    coverage = Column(Float, default=0.0)               # % of required sorties scheduled
+
+
+class DisruptionEvent(Base):
+    __tablename__ = "disruption_events"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    event_type = Column(String, nullable=False)         # WEATHER_UPDATE, AIRCRAFT_UNSERVICEABLE, etc.
+    entity_id = Column(String, nullable=True)           # aircraft_id, instructor_id, student_id
+    from_time = Column(DateTime, nullable=True)
+    to_time = Column(DateTime, nullable=True)
+    event_metadata = Column(JSON, default=dict)         # additional event data (renamed from metadata)
+    created_at = Column(DateTime, server_default=func.now())
+    correlation_id = Column(String, nullable=False)     # links to roster version
+
+
 # ── Weather cache ─────────────────────────────────────────────────────────────
 
 class WeatherCache(Base):
