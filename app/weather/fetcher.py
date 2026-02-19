@@ -3,19 +3,27 @@ Weather integration — fetches METAR data for an ICAO airfield.
 Uses aviationweather.gov API (free, no key needed).
 
 Flow:
-  get_weather(icao) → checks in-memory cache → fetches if stale → parses METAR
+  get_weather(icao) → checks Redis cache → fetches if stale → parses METAR
   If fetch fails → returns fallback with confidence="unknown"
 """
 import urllib.request
 import urllib.error
 import json
 import re
+import os
 from datetime import datetime, timedelta
-from dataclasses import dataclass, field
+from dataclasses import dataclass, asdict
 from typing import Optional
+
+try:
+    import redis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
 
 
 CACHE_TTL_MINUTES = 30
+CACHE_TTL_SECONDS = CACHE_TTL_MINUTES * 60
 
 
 @dataclass
@@ -26,16 +34,32 @@ class WeatherReport:
     wind_kt: Optional[int]
     crosswind_kt: Optional[int]
     raw_metar: str
-    fetched_at: datetime
+    fetched_at: str                  # ISO datetime string for JSON serialization
     confidence: str                  # "live" | "cached" | "unknown"
 
     def is_stale(self) -> bool:
-        return datetime.utcnow() - self.fetched_at > timedelta(minutes=CACHE_TTL_MINUTES)
+        fetched = datetime.fromisoformat(self.fetched_at)
+        return datetime.utcnow() - fetched > timedelta(minutes=CACHE_TTL_MINUTES)
 
 
-# ── In-memory cache ───────────────────────────────────────────────────────────
+# ── Redis connection ──────────────────────────────────────────────────────────
 
-_cache: dict[str, WeatherReport] = {}
+def _get_redis_client():
+    """Get Redis client or None if unavailable."""
+    if not REDIS_AVAILABLE:
+        return None
+    try:
+        redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+        client = redis.from_url(redis_url, decode_responses=True)
+        client.ping()  # Test connection
+        return client
+    except Exception as e:
+        print(f"[weather] Redis unavailable: {e}")
+        return None
+
+
+_redis_client = _get_redis_client()
+_memory_cache: dict[str, WeatherReport] = {}  # Fallback if Redis fails
 
 
 def get_weather(icao: str,
@@ -47,10 +71,24 @@ def get_weather(icao: str,
     METAR is always current conditions.
     """
     icao = icao.upper()
+    cache_key = f"weather:{icao}"
 
-    # Return cached if still fresh
-    if icao in _cache and not _cache[icao].is_stale():
-        report = _cache[icao]
+    # Try Redis cache first
+    if _redis_client:
+        try:
+            cached = _redis_client.get(cache_key)
+            if cached:
+                data = json.loads(cached)
+                report = WeatherReport(**data)
+                if not report.is_stale():
+                    report.confidence = "cached"
+                    return report
+        except Exception as e:
+            print(f"[weather] Redis read failed: {e}")
+
+    # Fallback to in-memory cache
+    if icao in _memory_cache and not _memory_cache[icao].is_stale():
+        report = _memory_cache[icao]
         report.confidence = "cached"
         return report
 
@@ -58,8 +96,22 @@ def get_weather(icao: str,
     try:
         raw = _fetch_metar(icao)
         report = _parse_metar(icao, raw)
-        _cache[icao] = report
+        
+        # Save to Redis
+        if _redis_client:
+            try:
+                _redis_client.setex(
+                    cache_key,
+                    CACHE_TTL_SECONDS,
+                    json.dumps(asdict(report))
+                )
+            except Exception as e:
+                print(f"[weather] Redis write failed: {e}")
+        
+        # Always save to memory as fallback
+        _memory_cache[icao] = report
         return report
+        
     except Exception as e:
         print(f"[weather] fetch failed for {icao}: {e}")
         return _fallback(icao)
@@ -101,7 +153,7 @@ def _parse_metar(icao: str, raw: str) -> WeatherReport:
         wind_kt=wind_kt,
         crosswind_kt=crosswind_kt,
         raw_metar=raw,
-        fetched_at=datetime.utcnow(),
+        fetched_at=datetime.utcnow().isoformat(),  # ISO string for JSON
         confidence="live",
     )
 
@@ -183,7 +235,7 @@ def _fallback(icao: str) -> WeatherReport:
         wind_kt=None,
         crosswind_kt=None,
         raw_metar="UNAVAILABLE",
-        fetched_at=datetime.utcnow(),
+        fetched_at=datetime.utcnow().isoformat(),
         confidence="unknown",
     )
 
@@ -195,11 +247,12 @@ def get_weather_mock(icao: str, scenario: str = "good") -> WeatherReport:
     Returns deterministic weather for testing.
     scenario: "good" | "low_ceiling" | "low_vis" | "high_wind" | "unavailable"
     """
+    now = datetime.utcnow().isoformat()
     scenarios = {
-        "good":        WeatherReport(icao, 5000, 10.0, 8,  2,  "VOBG 010800Z 27008KT 9999 FEW050 25/14 Q1013", datetime.utcnow(), "live"),
-        "low_ceiling": WeatherReport(icao, 800,  8.0,  6,  2,  "VOBG 010800Z 27006KT 8000 OVC008 18/16 Q1008", datetime.utcnow(), "live"),
-        "low_vis":     WeatherReport(icao, 3000, 2.0,  5,  1,  "VOBG 010800Z 27005KT 3200 BKN030 20/18 Q1010", datetime.utcnow(), "live"),
-        "high_wind":   WeatherReport(icao, 4000, 8.0,  25, 10, "VOBG 010800Z 27025KT 9999 FEW040 22/12 Q1015", datetime.utcnow(), "live"),
+        "good":        WeatherReport(icao, 5000, 10.0, 8,  2,  "VOBG 010800Z 27008KT 9999 FEW050 25/14 Q1013", now, "live"),
+        "low_ceiling": WeatherReport(icao, 800,  8.0,  6,  2,  "VOBG 010800Z 27006KT 8000 OVC008 18/16 Q1008", now, "live"),
+        "low_vis":     WeatherReport(icao, 3000, 2.0,  5,  1,  "VOBG 010800Z 27005KT 3200 BKN030 20/18 Q1010", now, "live"),
+        "high_wind":   WeatherReport(icao, 4000, 8.0,  25, 10, "VOBG 010800Z 27025KT 9999 FEW040 22/12 Q1015", now, "live"),
         "unavailable": _fallback(icao),
     }
     return scenarios.get(scenario, scenarios["good"])
