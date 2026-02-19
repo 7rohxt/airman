@@ -1,0 +1,22 @@
+{
+  "id": 26,
+  "name": "weather_and_aircraft",
+  "description": "Bad weather + AC01 down",
+  "week_start": "2025-08-11",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "MULTIPLE",
+    "events": [
+      {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "high_wind"
+      },
+      {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC01",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      }
+    ]
+  }
+}

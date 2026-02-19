@@ -1,0 +1,24 @@
+{
+  "id": 27,
+  "name": "instructor_and_student",
+  "description": "I001 sick + S001 absent",
+  "week_start": "2025-08-18",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "MULTIPLE",
+    "events": [
+      {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I001",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      },
+      {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S001",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      }
+    ]
+  }
+}

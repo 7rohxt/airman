@@ -1,0 +1,13 @@
+{
+  "id": 25,
+  "name": "student_S002_absent_day_1",
+  "description": "S002 unavailable on day 1",
+  "week_start": "2025-08-04",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "STUDENT_UNAVAILABLE",
+    "entity_id": "S002",
+    "from_time": "2025-08-05T00:00:00",
+    "to_time": "2025-08-05T23:59:59"
+  }
+}

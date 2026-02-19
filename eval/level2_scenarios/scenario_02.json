@@ -1,0 +1,13 @@
+{
+  "id": 2,
+  "name": "weather_deteriorate_day_3",
+  "description": "Good weather \u2192 low ceiling on day 3",
+  "week_start": "2025-07-07",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "WEATHER_UPDATE",
+    "weather_scenario": "low_ceiling",
+    "from_time": "2025-07-10",
+    "to_time": "2025-07-10"
+  }
+}

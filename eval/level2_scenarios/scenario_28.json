@@ -1,0 +1,24 @@
+{
+  "id": 28,
+  "name": "aircraft_and_instructor",
+  "description": "AC02 down + I002 sick",
+  "week_start": "2025-08-25",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "MULTIPLE",
+    "events": [
+      {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC02",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      },
+      {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I002",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      }
+    ]
+  }
+}

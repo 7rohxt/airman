@@ -1,0 +1,13 @@
+{
+  "id": 14,
+  "name": "aircraft_AC02_down_1d",
+  "description": "AC02 unserviceable for 1 day(s)",
+  "week_start": "2025-07-21",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "AIRCRAFT_UNSERVICEABLE",
+    "entity_id": "AC02",
+    "from_time": "2025-07-22T00:00:00",
+    "to_time": "2025-07-23T23:59:59"
+  }
+}

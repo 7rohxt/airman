@@ -1,0 +1,13 @@
+{
+  "id": 20,
+  "name": "instructor_I001_sick_day_2",
+  "description": "I001 unavailable on day 2",
+  "week_start": "2025-07-28",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "INSTRUCTOR_UNAVAILABLE",
+    "entity_id": "I001",
+    "from_time": "2025-07-30T00:00:00",
+    "to_time": "2025-07-30T23:59:59"
+  }
+}

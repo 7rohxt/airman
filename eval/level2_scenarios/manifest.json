@@ -1,0 +1,454 @@
+{
+  "total_scenarios": 30,
+  "generated_at": "2026-02-19",
+  "description": "Level 2 disruption test scenarios",
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "weather_deteriorate_day_2",
+      "description": "Good weather \u2192 low ceiling on day 2",
+      "week_start": "2025-07-07",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_ceiling",
+        "from_time": "2025-07-09",
+        "to_time": "2025-07-09"
+      }
+    },
+    {
+      "id": 2,
+      "name": "weather_deteriorate_day_3",
+      "description": "Good weather \u2192 low ceiling on day 3",
+      "week_start": "2025-07-07",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_ceiling",
+        "from_time": "2025-07-10",
+        "to_time": "2025-07-10"
+      }
+    },
+    {
+      "id": 3,
+      "name": "weather_deteriorate_day_4",
+      "description": "Good weather \u2192 low ceiling on day 4",
+      "week_start": "2025-07-07",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_ceiling",
+        "from_time": "2025-07-11",
+        "to_time": "2025-07-11"
+      }
+    },
+    {
+      "id": 4,
+      "name": "weather_deteriorate_day_5",
+      "description": "Good weather \u2192 low ceiling on day 5",
+      "week_start": "2025-07-07",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_ceiling",
+        "from_time": "2025-07-12",
+        "to_time": "2025-07-12"
+      }
+    },
+    {
+      "id": 5,
+      "name": "weather_deteriorate_day_6",
+      "description": "Good weather \u2192 low ceiling on day 6",
+      "week_start": "2025-07-07",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_ceiling",
+        "from_time": "2025-07-13",
+        "to_time": "2025-07-13"
+      }
+    },
+    {
+      "id": 6,
+      "name": "weather_improve_day_2",
+      "description": "Low ceiling \u2192 good weather on day 2",
+      "week_start": "2025-07-14",
+      "initial_weather": "low_ceiling",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "good",
+        "from_time": "2025-07-16",
+        "to_time": "2025-07-16"
+      }
+    },
+    {
+      "id": 7,
+      "name": "weather_improve_day_3",
+      "description": "Low ceiling \u2192 good weather on day 3",
+      "week_start": "2025-07-14",
+      "initial_weather": "low_ceiling",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "good",
+        "from_time": "2025-07-17",
+        "to_time": "2025-07-17"
+      }
+    },
+    {
+      "id": 8,
+      "name": "weather_improve_day_4",
+      "description": "Low ceiling \u2192 good weather on day 4",
+      "week_start": "2025-07-14",
+      "initial_weather": "low_ceiling",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "good",
+        "from_time": "2025-07-18",
+        "to_time": "2025-07-18"
+      }
+    },
+    {
+      "id": 9,
+      "name": "weather_improve_day_5",
+      "description": "Low ceiling \u2192 good weather on day 5",
+      "week_start": "2025-07-14",
+      "initial_weather": "low_ceiling",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "good",
+        "from_time": "2025-07-19",
+        "to_time": "2025-07-19"
+      }
+    },
+    {
+      "id": 10,
+      "name": "weather_improve_day_6",
+      "description": "Low ceiling \u2192 good weather on day 6",
+      "week_start": "2025-07-14",
+      "initial_weather": "low_ceiling",
+      "disruption": {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "good",
+        "from_time": "2025-07-20",
+        "to_time": "2025-07-20"
+      }
+    },
+    {
+      "id": 11,
+      "name": "aircraft_AC01_down_1d",
+      "description": "AC01 unserviceable for 1 day(s)",
+      "week_start": "2025-07-21",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC01",
+        "from_time": "2025-07-22T00:00:00",
+        "to_time": "2025-07-23T23:59:59"
+      }
+    },
+    {
+      "id": 12,
+      "name": "aircraft_AC02_down_2d",
+      "description": "AC02 unserviceable for 2 day(s)",
+      "week_start": "2025-07-21",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC02",
+        "from_time": "2025-07-22T00:00:00",
+        "to_time": "2025-07-24T23:59:59"
+      }
+    },
+    {
+      "id": 13,
+      "name": "aircraft_AC01_down_3d",
+      "description": "AC01 unserviceable for 3 day(s)",
+      "week_start": "2025-07-21",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC01",
+        "from_time": "2025-07-22T00:00:00",
+        "to_time": "2025-07-25T23:59:59"
+      }
+    },
+    {
+      "id": 14,
+      "name": "aircraft_AC02_down_1d",
+      "description": "AC02 unserviceable for 1 day(s)",
+      "week_start": "2025-07-21",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC02",
+        "from_time": "2025-07-22T00:00:00",
+        "to_time": "2025-07-23T23:59:59"
+      }
+    },
+    {
+      "id": 15,
+      "name": "aircraft_AC01_down_2d",
+      "description": "AC01 unserviceable for 2 day(s)",
+      "week_start": "2025-07-21",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC01",
+        "from_time": "2025-07-22T00:00:00",
+        "to_time": "2025-07-24T23:59:59"
+      }
+    },
+    {
+      "id": 16,
+      "name": "instructor_I001_sick_day_1",
+      "description": "I001 unavailable on day 1",
+      "week_start": "2025-07-28",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I001",
+        "from_time": "2025-07-29T00:00:00",
+        "to_time": "2025-07-29T23:59:59"
+      }
+    },
+    {
+      "id": 17,
+      "name": "instructor_I002_sick_day_2",
+      "description": "I002 unavailable on day 2",
+      "week_start": "2025-07-28",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I002",
+        "from_time": "2025-07-30T00:00:00",
+        "to_time": "2025-07-30T23:59:59"
+      }
+    },
+    {
+      "id": 18,
+      "name": "instructor_I001_sick_day_3",
+      "description": "I001 unavailable on day 3",
+      "week_start": "2025-07-28",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I001",
+        "from_time": "2025-07-31T00:00:00",
+        "to_time": "2025-07-31T23:59:59"
+      }
+    },
+    {
+      "id": 19,
+      "name": "instructor_I002_sick_day_1",
+      "description": "I002 unavailable on day 1",
+      "week_start": "2025-07-28",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I002",
+        "from_time": "2025-07-29T00:00:00",
+        "to_time": "2025-07-29T23:59:59"
+      }
+    },
+    {
+      "id": 20,
+      "name": "instructor_I001_sick_day_2",
+      "description": "I001 unavailable on day 2",
+      "week_start": "2025-07-28",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I001",
+        "from_time": "2025-07-30T00:00:00",
+        "to_time": "2025-07-30T23:59:59"
+      }
+    },
+    {
+      "id": 21,
+      "name": "student_S001_absent_day_1",
+      "description": "S001 unavailable on day 1",
+      "week_start": "2025-08-04",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S001",
+        "from_time": "2025-08-05T00:00:00",
+        "to_time": "2025-08-05T23:59:59"
+      }
+    },
+    {
+      "id": 22,
+      "name": "student_S002_absent_day_2",
+      "description": "S002 unavailable on day 2",
+      "week_start": "2025-08-04",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S002",
+        "from_time": "2025-08-06T00:00:00",
+        "to_time": "2025-08-06T23:59:59"
+      }
+    },
+    {
+      "id": 23,
+      "name": "student_S003_absent_day_3",
+      "description": "S003 unavailable on day 3",
+      "week_start": "2025-08-04",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S003",
+        "from_time": "2025-08-07T00:00:00",
+        "to_time": "2025-08-07T23:59:59"
+      }
+    },
+    {
+      "id": 24,
+      "name": "student_S001_absent_day_4",
+      "description": "S001 unavailable on day 4",
+      "week_start": "2025-08-04",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S001",
+        "from_time": "2025-08-08T00:00:00",
+        "to_time": "2025-08-08T23:59:59"
+      }
+    },
+    {
+      "id": 25,
+      "name": "student_S002_absent_day_1",
+      "description": "S002 unavailable on day 1",
+      "week_start": "2025-08-04",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "STUDENT_UNAVAILABLE",
+        "entity_id": "S002",
+        "from_time": "2025-08-05T00:00:00",
+        "to_time": "2025-08-05T23:59:59"
+      }
+    },
+    {
+      "id": 26,
+      "name": "weather_and_aircraft",
+      "description": "Bad weather + AC01 down",
+      "week_start": "2025-08-11",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "MULTIPLE",
+        "events": [
+          {
+            "event_type": "WEATHER_UPDATE",
+            "weather_scenario": "high_wind"
+          },
+          {
+            "event_type": "AIRCRAFT_UNSERVICEABLE",
+            "entity_id": "AC01",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "name": "instructor_and_student",
+      "description": "I001 sick + S001 absent",
+      "week_start": "2025-08-18",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "MULTIPLE",
+        "events": [
+          {
+            "event_type": "INSTRUCTOR_UNAVAILABLE",
+            "entity_id": "I001",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          },
+          {
+            "event_type": "STUDENT_UNAVAILABLE",
+            "entity_id": "S001",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "name": "aircraft_and_instructor",
+      "description": "AC02 down + I002 sick",
+      "week_start": "2025-08-25",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "MULTIPLE",
+        "events": [
+          {
+            "event_type": "AIRCRAFT_UNSERVICEABLE",
+            "entity_id": "AC02",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          },
+          {
+            "event_type": "INSTRUCTOR_UNAVAILABLE",
+            "entity_id": "I002",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          }
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "name": "triple_disruption",
+      "description": "Weather + AC01 down + I001 sick",
+      "week_start": "2025-09-01",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "MULTIPLE",
+        "events": [
+          {
+            "event_type": "WEATHER_UPDATE",
+            "weather_scenario": "low_vis"
+          },
+          {
+            "event_type": "AIRCRAFT_UNSERVICEABLE",
+            "entity_id": "AC01",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          },
+          {
+            "event_type": "INSTRUCTOR_UNAVAILABLE",
+            "entity_id": "I001",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          }
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "name": "all_aircraft_down",
+      "description": "Both aircraft unserviceable",
+      "week_start": "2025-09-08",
+      "initial_weather": "good",
+      "disruption": {
+        "event_type": "MULTIPLE",
+        "events": [
+          {
+            "event_type": "AIRCRAFT_UNSERVICEABLE",
+            "entity_id": "AC01",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          },
+          {
+            "event_type": "AIRCRAFT_UNSERVICEABLE",
+            "entity_id": "AC02",
+            "from_time": "T00:00:00",
+            "to_time": "T23:59:59"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": 29,
+  "name": "triple_disruption",
+  "description": "Weather + AC01 down + I001 sick",
+  "week_start": "2025-09-01",
+  "initial_weather": "good",
+  "disruption": {
+    "event_type": "MULTIPLE",
+    "events": [
+      {
+        "event_type": "WEATHER_UPDATE",
+        "weather_scenario": "low_vis"
+      },
+      {
+        "event_type": "AIRCRAFT_UNSERVICEABLE",
+        "entity_id": "AC01",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      },
+      {
+        "event_type": "INSTRUCTOR_UNAVAILABLE",
+        "entity_id": "I001",
+        "from_time": "T00:00:00",
+        "to_time": "T23:59:59"
+      }
+    ]
+  }
+}
