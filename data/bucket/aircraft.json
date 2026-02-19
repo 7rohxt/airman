@@ -1,0 +1,18 @@
+[
+  {
+    "id": "AC01", "type": "C172", "status": "AVAILABLE",
+    "sim_mapping": "SIM01",
+    "availability_windows": {
+      "Mon": ["07:00-17:00"], "Tue": ["07:00-17:00"],
+      "Wed": ["07:00-17:00"], "Thu": ["07:00-17:00"], "Fri": ["07:00-15:00"]
+    }
+  },
+  {
+    "id": "AC02", "type": "C172", "status": "AVAILABLE",
+    "sim_mapping": "SIM01",
+    "availability_windows": {
+      "Mon": ["07:00-17:00"], "Tue": ["07:00-17:00"],
+      "Wed": ["MAINTENANCE"], "Thu": ["07:00-17:00"], "Fri": ["07:00-17:00"]
+    }
+  }
+]

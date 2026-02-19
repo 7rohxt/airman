@@ -1,0 +1,6 @@
+[
+  {"id": "AM1", "start_time": "08:00", "end_time": "10:00", "label": "Morning Block 1"},
+  {"id": "AM2", "start_time": "10:00", "end_time": "12:00", "label": "Morning Block 2"},
+  {"id": "PM1", "start_time": "13:00", "end_time": "15:00", "label": "Afternoon Block 1"},
+  {"id": "PM2", "start_time": "15:00", "end_time": "17:00", "label": "Afternoon Block 2"}
+]

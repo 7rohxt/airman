@@ -1,0 +1,22 @@
+[
+  {
+    "id": "I001", "name": "Capt. Rajan Kumar",
+    "ratings": ["CIRCUITS", "NAV", "CHK_PREP"],
+    "currency": {"CIRCUITS": "2025-06-01", "NAV": "2025-05-15", "CHK_PREP": "2025-04-01"},
+    "max_duty_hours_per_day": 8, "sim_instructor": false,
+    "availability": {
+      "Mon": ["07:00-15:00"], "Tue": ["07:00-15:00"],
+      "Wed": ["07:00-15:00"], "Thu": ["07:00-15:00"], "Fri": ["07:00-13:00"]
+    }
+  },
+  {
+    "id": "I002", "name": "FO Sneha Pillai",
+    "ratings": ["CIRCUITS", "SIM_PROCEDURES"],
+    "currency": {"CIRCUITS": "2025-06-10", "SIM_PROCEDURES": "2025-06-01"},
+    "max_duty_hours_per_day": 8, "sim_instructor": true,
+    "availability": {
+      "Mon": ["08:00-16:00"], "Tue": ["08:00-16:00"],
+      "Wed": ["08:00-16:00"], "Thu": ["08:00-16:00"], "Fri": ["08:00-16:00"]
+    }
+  }
+]

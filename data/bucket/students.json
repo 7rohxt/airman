@@ -1,0 +1,33 @@
+[
+  {
+    "id": "S001", "name": "Arjun Mehta", "stage": "PPL-2",
+    "priority": 1, "solo_eligible": false, "required_sorties_per_week": 3,
+    "availability": {
+      "Mon": ["08:00-12:00", "14:00-17:00"],
+      "Tue": ["08:00-12:00"],
+      "Wed": ["08:00-17:00"],
+      "Thu": ["14:00-17:00"],
+      "Fri": ["08:00-12:00"]
+    }
+  },
+  {
+    "id": "S002", "name": "Priya Nair", "stage": "PPL-4",
+    "priority": 2, "solo_eligible": true, "required_sorties_per_week": 4,
+    "availability": {
+      "Mon": ["08:00-17:00"],
+      "Tue": ["08:00-17:00"],
+      "Wed": ["08:00-12:00"],
+      "Thu": ["08:00-17:00"],
+      "Fri": ["08:00-17:00"]
+    }
+  },
+  {
+    "id": "S003", "name": "Vikram Singh", "stage": "PPL-1",
+    "priority": 3, "solo_eligible": false, "required_sorties_per_week": 2,
+    "availability": {
+      "Tue": ["08:00-12:00"],
+      "Thu": ["08:00-12:00"],
+      "Fri": ["08:00-17:00"]
+    }
+  }
+]
