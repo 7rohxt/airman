@@ -87,10 +87,11 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
-    - name: Test Docker Compose
+    - name: Validate Docker Compose file
       run: |
-        docker-compose config
-        echo "✅ Docker Compose configuration valid"
+        # docker-compose config requires the binary
+        docker compose version
+        docker compose config
 
   integration-test:
     runs-on: ubuntu-latest
