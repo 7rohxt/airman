@@ -407,6 +407,91 @@ def roster_versions(
     }
 
 
+@app.post("/eval/level2")
+def eval_level2(scenario_count: int = 30, db: Session = Depends(get_db)):
+    """
+    Run Level 2 evaluation: test disruption scenarios.
+    
+    Metrics:
+    - Churn rate (target: <30%)
+    - Coverage maintained (target: >80%)
+    - Zero hard constraint violations
+    - Citation coverage
+    """
+    import json
+    from pathlib import Path
+    
+    # Load scenarios
+    manifest_path = Path("eval/level2_scenarios/manifest.json")
+    if not manifest_path.exists():
+        raise HTTPException(status_code=404, 
+            detail="Level 2 scenarios not found. Run: python eval/generate_level2_scenarios.py")
+    
+    with open(manifest_path) as f:
+        manifest = json.load(f)
+        scenarios_to_test = manifest["scenarios"][:scenario_count]
+    
+    results = []
+    
+    for scenario in scenarios_to_test:
+        try:
+            # Generate initial roster
+            roster = roster_generate(
+                week_start=scenario["week_start"],
+                base_icao="VOBG",
+                use_mock_weather=True,
+                weather_scenario=scenario.get("initial_weather", "good"),
+                db=db
+            )
+            
+            # Apply disruption
+            disruption = scenario["disruption"]
+            realloc_result = roster_reallocate(
+                event_type=disruption["event_type"],
+                entity_id=disruption.get("entity_id"),
+                from_time=disruption.get("from_time"),
+                to_time=disruption.get("to_time"),
+                weather_scenario=disruption.get("weather_scenario"),
+                week_start=scenario["week_start"],
+                db=db
+            )
+            
+            # Check constraints
+            violations = _check_constraints(realloc_result["roster"])
+            
+            results.append({
+                "scenario_id": scenario["id"],
+                "scenario_name": scenario["name"],
+                "churn_rate": realloc_result["churn_rate"],
+                "affected_slots": realloc_result["affected_slots"],
+                "constraint_violations": violations,
+                "pass": violations == 0 and realloc_result["churn_rate"] < 30.0,
+            })
+        
+        except Exception as e:
+            results.append({
+                "scenario_id": scenario["id"],
+                "scenario_name": scenario["name"],
+                "error": str(e),
+                "pass": False
+            })
+    
+    # Summary
+    passed = sum(1 for r in results if r.get("pass", False))
+    avg_churn = sum(r.get("churn_rate", 0) for r in results) / len(results)
+    total_violations = sum(r.get("constraint_violations", 0) for r in results)
+    
+    return {
+        "scenarios_tested": len(results),
+        "passed": passed,
+        "failed": len(results) - passed,
+        "pass_rate": f"{(passed / len(results) * 100):.1f}%",
+        "avg_churn_rate": f"{avg_churn:.2f}%",
+        "total_constraint_violations": total_violations,
+        "details": results
+    }
+
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _to_dict(obj) -> dict:
