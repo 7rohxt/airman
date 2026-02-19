@@ -45,13 +45,13 @@ jobs:
         python app/dispatch/test_dispatch.py
         python app/rag/test_rag.py
     
-    - name: Generate eval scenarios
+    - name: Generate eval scenarios (Level 1 + 2)
       run: |
         python eval/generate_scenarios.py
+        python eval/generate_level2_scenarios.py
     
-    - name: Run eval smoke test
+    - name: Run eval smoke test (Level 1)
       run: |
-        # Quick eval with 5 scenarios to verify no crashes
         python -c "
         import sys
         sys.path.insert(0, '.')
@@ -61,9 +61,26 @@ jobs:
         if manifest.exists():
             data = json.load(open(manifest))
             assert data['total_scenarios'] == 25, 'Expected 25 scenarios'
-            print(f\"✅ Eval: {data['total_scenarios']} scenarios generated\")
+            print(f\"✅ Level 1 Eval: {data['total_scenarios']} scenarios\")
         else:
-            print('❌ Manifest not found')
+            print('❌ Level 1 manifest not found')
+            sys.exit(1)
+        "
+    
+    - name: Run eval smoke test (Level 2)
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, '.')
+        from pathlib import Path
+        import json
+        manifest = Path('eval/level2_scenarios/manifest.json')
+        if manifest.exists():
+            data = json.load(open(manifest))
+            assert data['total_scenarios'] == 30, 'Expected 30 scenarios'
+            print(f\"✅ Level 2 Eval: {data['total_scenarios']} disruption scenarios\")
+        else:
+            print('❌ Level 2 manifest not found')
             sys.exit(1)
         "
 
