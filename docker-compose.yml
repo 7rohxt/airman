@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  postgres:
+    image: postgres:15
+    container_name: airman-postgres
+    environment:
+      POSTGRES_USER: airman
+      POSTGRES_PASSWORD: airman
+      POSTGRES_DB: airman
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airman"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis cache 
+  redis:
+    image: redis:7-alpine
+    container_name: airman-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # FastAPI application
+  api:
+    build: .
+    container_name: airman-api
+    environment:
+      DATABASE_URL: postgresql://airman:airman@postgres:5432/airman
+      REDIS_URL: redis://redis:6379/0
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      BASE_ICAO: VOBG
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+    command: uvicorn app.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
