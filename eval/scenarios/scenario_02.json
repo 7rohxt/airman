@@ -1,0 +1,8 @@
+{
+  "id": 2,
+  "name": "baseline_weather_low_ceiling",
+  "description": "Standard roster with low_ceiling weather",
+  "week_start": "2025-07-07",
+  "weather_scenario": "low_ceiling",
+  "bucket_variant": "baseline"
+}

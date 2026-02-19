@@ -1,0 +1,206 @@
+{
+  "total_scenarios": 25,
+  "generated_at": "2026-02-19",
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "baseline_weather_good",
+      "description": "Standard roster with good weather",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 2,
+      "name": "baseline_weather_low_ceiling",
+      "description": "Standard roster with low_ceiling weather",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 3,
+      "name": "baseline_weather_low_vis",
+      "description": "Standard roster with low_vis weather",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 4,
+      "name": "baseline_weather_high_wind",
+      "description": "Standard roster with high_wind weather",
+      "week_start": "2025-07-07",
+      "weather_scenario": "high_wind",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 5,
+      "name": "baseline_weather_unavailable",
+      "description": "Standard roster with unavailable weather",
+      "week_start": "2025-07-07",
+      "weather_scenario": "unavailable",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 6,
+      "name": "week_shift_1",
+      "description": "Week starting 2025-07-07",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 7,
+      "name": "week_shift_2",
+      "description": "Week starting 2025-07-14",
+      "week_start": "2025-07-14",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 8,
+      "name": "week_shift_3",
+      "description": "Week starting 2025-07-21",
+      "week_start": "2025-07-21",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 9,
+      "name": "week_shift_4",
+      "description": "Week starting 2025-07-28",
+      "week_start": "2025-07-28",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 10,
+      "name": "week_shift_5",
+      "description": "Week starting 2025-08-04",
+      "week_start": "2025-08-04",
+      "weather_scenario": "good",
+      "bucket_variant": "baseline"
+    },
+    {
+      "id": 11,
+      "name": "reduced_availability_1",
+      "description": "Students with 60% availability, low ceiling",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "reduced_avail_1"
+    },
+    {
+      "id": 12,
+      "name": "reduced_availability_2",
+      "description": "Students with 50% availability, low ceiling",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "reduced_avail_2"
+    },
+    {
+      "id": 13,
+      "name": "reduced_availability_3",
+      "description": "Students with 40% availability, low ceiling",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "reduced_avail_3"
+    },
+    {
+      "id": 14,
+      "name": "reduced_availability_4",
+      "description": "Students with 30% availability, low ceiling",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "reduced_avail_4"
+    },
+    {
+      "id": 15,
+      "name": "reduced_availability_5",
+      "description": "Students with 20% availability, low ceiling",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_ceiling",
+      "bucket_variant": "reduced_avail_5"
+    },
+    {
+      "id": 16,
+      "name": "priority_mix_1",
+      "description": "Priority distribution variant 1",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "priority_1"
+    },
+    {
+      "id": 17,
+      "name": "priority_mix_2",
+      "description": "Priority distribution variant 2",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "priority_2"
+    },
+    {
+      "id": 18,
+      "name": "priority_mix_3",
+      "description": "Priority distribution variant 3",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "priority_3"
+    },
+    {
+      "id": 19,
+      "name": "priority_mix_4",
+      "description": "Priority distribution variant 4",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "priority_4"
+    },
+    {
+      "id": 20,
+      "name": "priority_mix_5",
+      "description": "Priority distribution variant 5",
+      "week_start": "2025-07-07",
+      "weather_scenario": "good",
+      "bucket_variant": "priority_5"
+    },
+    {
+      "id": 21,
+      "name": "maintenance_window_1",
+      "description": "Aircraft AC01 in maintenance",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "maintenance_1"
+    },
+    {
+      "id": 22,
+      "name": "maintenance_window_2",
+      "description": "Aircraft AC02 in maintenance",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "maintenance_2"
+    },
+    {
+      "id": 23,
+      "name": "maintenance_window_3",
+      "description": "Aircraft AC01 in maintenance",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "maintenance_3"
+    },
+    {
+      "id": 24,
+      "name": "maintenance_window_4",
+      "description": "Aircraft AC01 in maintenance",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "maintenance_4"
+    },
+    {
+      "id": 25,
+      "name": "maintenance_window_5",
+      "description": "Aircraft AC01 in maintenance",
+      "week_start": "2025-07-07",
+      "weather_scenario": "low_vis",
+      "bucket_variant": "maintenance_5"
+    }
+  ]
+}

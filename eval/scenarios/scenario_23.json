@@ -1,0 +1,8 @@
+{
+  "id": 23,
+  "name": "maintenance_window_3",
+  "description": "Aircraft AC01 in maintenance",
+  "week_start": "2025-07-07",
+  "weather_scenario": "low_vis",
+  "bucket_variant": "maintenance_3"
+}

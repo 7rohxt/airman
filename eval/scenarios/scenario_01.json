@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "name": "baseline_weather_good",
+  "description": "Standard roster with good weather",
+  "week_start": "2025-07-07",
+  "weather_scenario": "good",
+  "bucket_variant": "baseline"
+}

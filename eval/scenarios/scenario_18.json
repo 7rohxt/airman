@@ -1,0 +1,8 @@
+{
+  "id": 18,
+  "name": "priority_mix_3",
+  "description": "Priority distribution variant 3",
+  "week_start": "2025-07-07",
+  "weather_scenario": "good",
+  "bucket_variant": "priority_3"
+}

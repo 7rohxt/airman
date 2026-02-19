@@ -1,0 +1,8 @@
+{
+  "id": 10,
+  "name": "week_shift_5",
+  "description": "Week starting 2025-08-04",
+  "week_start": "2025-08-04",
+  "weather_scenario": "good",
+  "bucket_variant": "baseline"
+}

@@ -1,0 +1,8 @@
+{
+  "id": 5,
+  "name": "baseline_weather_unavailable",
+  "description": "Standard roster with unavailable weather",
+  "week_start": "2025-07-07",
+  "weather_scenario": "unavailable",
+  "bucket_variant": "baseline"
+}

@@ -1,0 +1,8 @@
+{
+  "id": 14,
+  "name": "reduced_availability_4",
+  "description": "Students with 30% availability, low ceiling",
+  "week_start": "2025-07-07",
+  "weather_scenario": "low_ceiling",
+  "bucket_variant": "reduced_avail_4"
+}
