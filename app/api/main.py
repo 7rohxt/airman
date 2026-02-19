@@ -18,7 +18,11 @@ from app.weather.fetcher import get_weather, get_weather_mock
 from app.dispatch.engine import check_dispatch
 from app.rag.retriever import MockRulesRAG
 
-app = FastAPI(title="AIRMAN Dispatch API", version="1.0.0")
+# Level 2 imports
+from app.reallocation.engine import DisruptionEvent as DisruptionEventClass, reallocate_roster
+from app.models import RosterVersion, DisruptionEvent as DisruptionEventDB
+
+app = FastAPI(title="AIRMAN Dispatch API", version="2.0.0")
 
 # Initialize DB tables on startup
 @app.on_event("startup")
@@ -246,6 +250,154 @@ def eval_run(scenario_count: int = 25, db: Session = Depends(get_db)):
         "total_constraint_violations": total_violations,
         "avg_citation_coverage": f"{avg_citation:.1f}%",
         "details": results
+    }
+
+
+# ── Level 2: Reallocation endpoints ───────────────────────────────────────────
+
+@app.post("/roster/reallocate")
+def roster_reallocate(
+    event_type: str,
+    entity_id: Optional[str] = None,
+    from_time: Optional[str] = None,
+    to_time: Optional[str] = None,
+    weather_scenario: Optional[str] = None,
+    week_start: str = "2025-07-07",
+    db: Session = Depends(get_db)
+):
+    """
+    Apply a disruption event and reallocate the roster.
+    
+    event_type: WEATHER_UPDATE | AIRCRAFT_UNSERVICEABLE | INSTRUCTOR_UNAVAILABLE | STUDENT_UNAVAILABLE
+    entity_id: aircraft_id, instructor_id, or student_id (not needed for WEATHER_UPDATE)
+    from_time, to_time: ISO datetime strings
+    weather_scenario: for WEATHER_UPDATE events
+    """
+    try:
+        from datetime import datetime
+        
+        # Create disruption event
+        event = DisruptionEventClass(
+            event_type=event_type,
+            entity_id=entity_id,
+            from_time=datetime.fromisoformat(from_time) if from_time else None,
+            to_time=datetime.fromisoformat(to_time) if to_time else None,
+            metadata={"weather_scenario": weather_scenario} if weather_scenario else {}
+        )
+        
+        # Load entities
+        students    = [_to_dict(s) for s in db.query(Student).all()]
+        instructors = [_to_dict(i) for i in db.query(Instructor).all()]
+        aircraft    = [_to_dict(a) for a in db.query(Aircraft).all()]
+        simulators  = [_to_dict(s) for s in db.query(Simulator).all()]
+        time_slots  = [_to_dict(t) for t in db.query(TimeSlot).all()]
+        
+        # Get current roster (latest version or generate new)
+        latest_version = (
+            db.query(RosterVersion)
+            .filter(RosterVersion.week_start == date.fromisoformat(week_start))
+            .order_by(RosterVersion.version.desc())
+            .first()
+        )
+        
+        if latest_version:
+            current_roster = latest_version.roster_json
+        else:
+            # Generate initial roster
+            from app.scheduling.roster import generate_roster
+            current_roster = generate_roster(
+                week_start=date.fromisoformat(week_start),
+                base_icao="VOBG",
+                students=students,
+                instructors=instructors,
+                aircraft=aircraft,
+                simulators=simulators,
+                time_slots=time_slots,
+            )
+        
+        # Reallocate
+        result = reallocate_roster(
+            current_roster=current_roster,
+            event=event,
+            students=students,
+            instructors=instructors,
+            aircraft=aircraft,
+            simulators=simulators,
+            time_slots=time_slots,
+        )
+        
+        # Save new version
+        new_version_num = (latest_version.version + 1) if latest_version else 1
+        total_slots = sum(len(day["slots"]) for day in result["new_roster"]["roster"])
+        
+        new_version = RosterVersion(
+            version=new_version_num,
+            week_start=date.fromisoformat(week_start),
+            correlation_id=result["correlation_id"],
+            roster_json=result["new_roster"],
+            diff_json=result["diff"],
+            change_summary={
+                "affected_slots": len(result["affected_slots"]),
+                "event_type": result["event_type"],
+            },
+            churn_rate=result["churn_rate"],
+            coverage=0.0,  # TODO: compute actual coverage
+        )
+        db.add(new_version)
+        
+        # Save disruption event
+        disruption = DisruptionEventDB(
+            event_type=event.event_type,
+            entity_id=event.entity_id,
+            from_time=event.from_time,
+            to_time=event.to_time,
+            event_metadata=event.metadata,
+            correlation_id=event.correlation_id,
+        )
+        db.add(disruption)
+        db.commit()
+        
+        return {
+            "version": new_version_num,
+            "correlation_id": result["correlation_id"],
+            "churn_rate": result["churn_rate"],
+            "affected_slots": len(result["affected_slots"]),
+            "diff": result["diff"],
+            "roster": result["new_roster"],
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/roster/versions")
+def roster_versions(
+    week_start: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Get roster version history for a given week.
+    """
+    query = db.query(RosterVersion)
+    
+    if week_start:
+        query = query.filter(RosterVersion.week_start == date.fromisoformat(week_start))
+    
+    versions = query.order_by(RosterVersion.created_at.desc()).all()
+    
+    return {
+        "total_versions": len(versions),
+        "versions": [
+            {
+                "version": v.version,
+                "week_start": v.week_start.isoformat(),
+                "created_at": v.created_at.isoformat(),
+                "correlation_id": v.correlation_id,
+                "churn_rate": v.churn_rate,
+                "total_changes": v.diff_json.get("total_changes", 0) if v.diff_json else 0,
+            }
+            for v in versions
+        ]
     }
 
 
