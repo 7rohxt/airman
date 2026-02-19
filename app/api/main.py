@@ -131,7 +131,6 @@ def roster_generate(
                 if hasattr(weather.fetched_at, "isoformat")
                 else weather.fetched_at
             ),
-
         }
         
         return roster
@@ -441,8 +440,8 @@ def eval_level2(scenario_count: int = 30, db: Session = Depends(get_db)):
     
     for scenario in scenarios_to_test:
         try:
-            # Generate initial roster
-            roster = roster_generate(
+            # Step 1: Generate initial roster and save as version 1
+            initial_roster = roster_generate(
                 week_start=scenario["week_start"],
                 base_icao="VOBG",
                 use_mock_weather=True,
@@ -450,7 +449,22 @@ def eval_level2(scenario_count: int = 30, db: Session = Depends(get_db)):
                 db=db
             )
             
-            # Apply disruption
+            # Save as version 1 (so reallocation has something to compare against)
+            week_date = date.fromisoformat(scenario["week_start"])
+            version_1 = RosterVersion(
+                version=1,
+                week_start=week_date,
+                correlation_id=None,
+                roster_json=initial_roster,
+                diff_json=None,
+                change_summary={},
+                churn_rate=0.0,
+                coverage=0.0
+            )
+            db.add(version_1)
+            db.commit()
+            
+            # Step 2: Apply disruption (will compare against version 1)
             disruption = scenario["disruption"]
             realloc_result = roster_reallocate(
                 event_type=disruption["event_type"],
@@ -473,6 +487,12 @@ def eval_level2(scenario_count: int = 30, db: Session = Depends(get_db)):
                 "constraint_violations": violations,
                 "pass": violations == 0 and realloc_result["churn_rate"] < 30.0,
             })
+            
+            # Clean up versions for next scenario
+            db.query(RosterVersion).filter(
+                RosterVersion.week_start == week_date
+            ).delete()
+            db.commit()
         
         except Exception as e:
             results.append({
