@@ -126,7 +126,12 @@ def roster_generate(
             "visibility_sm": weather.visibility_sm,
             "wind_kt": weather.wind_kt,
             "confidence": weather.confidence,
-            "fetched_at": weather.fetched_at.isoformat(),
+            "fetched_at": (
+                weather.fetched_at.isoformat()
+                if hasattr(weather.fetched_at, "isoformat")
+                else weather.fetched_at
+            ),
+
         }
         
         return roster
