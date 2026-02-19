@@ -22,6 +22,7 @@ from app.rag.retriever import MockRulesRAG
 from app.reallocation.engine import DisruptionEvent as DisruptionEventClass, reallocate_roster
 from app.models import RosterVersion, DisruptionEvent as DisruptionEventDB
 from app.agent.workflow import run_reallocation_agent
+from app.observability.metrics import get_metrics, get_coverage_metrics
 
 app = FastAPI(title="AIRMAN Dispatch API", version="2.0.0")
 
@@ -490,6 +491,19 @@ def eval_level2(scenario_count: int = 30, db: Session = Depends(get_db)):
         "total_constraint_violations": total_violations,
         "details": results
     }
+
+
+@app.get("/metrics")
+def metrics(days: int = 7, db: Session = Depends(get_db)):
+    """
+    Get observability metrics for Level 2.
+    
+    - Churn rate trends
+    - Coverage rates
+    - Disruption event frequency
+    - Reallocation performance
+    """
+    return get_metrics(db, days=days)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
