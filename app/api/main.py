@@ -21,6 +21,7 @@ from app.rag.retriever import MockRulesRAG
 # Level 2 imports
 from app.reallocation.engine import DisruptionEvent as DisruptionEventClass, reallocate_roster
 from app.models import RosterVersion, DisruptionEvent as DisruptionEventDB
+from app.agent.workflow import run_reallocation_agent
 
 app = FastAPI(title="AIRMAN Dispatch API", version="2.0.0")
 
@@ -315,33 +316,38 @@ def roster_reallocate(
                 time_slots=time_slots,
             )
         
-        # Reallocate
-        result = reallocate_roster(
+        # Reallocate using LangGraph agent
+        result = run_reallocation_agent(
             current_roster=current_roster,
-            event=event,
+            disruption_event={
+                "event_type": event.event_type,
+                "entity_id": event.entity_id,
+                "from_time": event.from_time,
+                "to_time": event.to_time,
+                "metadata": event.metadata,
+            },
             students=students,
             instructors=instructors,
             aircraft=aircraft,
             simulators=simulators,
-            time_slots=time_slots,
         )
         
         # Save new version
         new_version_num = (latest_version.version + 1) if latest_version else 1
-        total_slots = sum(len(day["slots"]) for day in result["new_roster"]["roster"])
+        total_slots = sum(len(day["slots"]) for day in result["final_roster"]["roster"])
         
         new_version = RosterVersion(
             version=new_version_num,
             week_start=date.fromisoformat(week_start),
-            correlation_id=result["correlation_id"],
-            roster_json=result["new_roster"],
+            correlation_id=event.correlation_id,
+            roster_json=result["final_roster"],
             diff_json=result["diff"],
             change_summary={
                 "affected_slots": len(result["affected_slots"]),
-                "event_type": result["event_type"],
+                "event_type": event.event_type,
             },
             churn_rate=result["churn_rate"],
-            coverage=0.0,  # TODO: compute actual coverage
+            coverage=0.0,
         )
         db.add(new_version)
         
@@ -359,11 +365,11 @@ def roster_reallocate(
         
         return {
             "version": new_version_num,
-            "correlation_id": result["correlation_id"],
+            "correlation_id": event.correlation_id,
             "churn_rate": result["churn_rate"],
             "affected_slots": len(result["affected_slots"]),
             "diff": result["diff"],
-            "roster": result["new_roster"],
+            "roster": result["final_roster"],
         }
     
     except Exception as e:
